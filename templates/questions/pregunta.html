@@ -1,0 +1,40 @@
+{%extends "questions/principal.html"%}
+{% block card-preguntas %} 
+        <div class="row">
+            <div class="col">
+                <form action="{% url 'resultados' %}" method="POST" id="form-pregunta">
+                    {% csrf_token %}
+                    <input type="hidden" name="valor_form" id="valor_input">
+                    {% for pregunta in questions %}                                              
+                        <div class="card" style="width: 75%;">
+                            <div class="card-body">
+                                <h5 class="card-title">{{forloop.counter}}. Pregunta</h5>
+                                <p class="card-text">{{pregunta.question}}</p>
+                                <div class="d-flex flex-row justify-content-between">                                                        
+                                    {% for r in answers %}    
+                                        {% if r.question_id.id == pregunta.id%}                                            
+                                            <a href="#" onclick="mostrarSiguiente('{{r.is_correct}}')"  class="btn btn-primary" style="width=150px">{{forloop.counter}}). {{r.answer}} </a>
+                                        {% endif %}                   
+                                    {% endfor %}                                                             
+                                </div>
+                            </div>
+                        </div>                        
+                    {% endfor %}     
+                    <button type="submit">Enviar    </button>
+                </form>           
+            </div>
+        </div>
+        <script>
+            correcto=0;
+            function mostrarSiguiente(n){    
+                if(n=="True"){
+                    correcto+=1;                    
+                }                
+            }                           
+            // Actualizar el valor del campo oculto antes de enviar el formulario
+            document.getElementById("form-pregunta").addEventListener("submit", function() {
+                document.getElementById("valor_input").value = correcto;            
+                correcto=0;    
+            });     
+        </script>
+{% endblock card-preguntas%}

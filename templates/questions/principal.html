@@ -1,0 +1,20 @@
+{%extends "../base.html"%} {% block contenido %} 
+    <h1 class="text-danger">Quien quiere ser millonario</h1>
+    <main class="container m-5">
+        {% block card-preguntas %}
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dificultadDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                Seleccionar Dificultad
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dificultadDropdown">                
+                {% for level in niveles %}
+                    <li><a class="dropdown-item" href="{% url 'pregunta' id=forloop.counter %}">{{level.name}} </a></li>                    
+                {% endfor %}                
+            </ul>
+        </div>
+        <hr>
+        
+        {% endblock card-preguntas %}      
+        
+    </main>
+{% endblock contenido %}

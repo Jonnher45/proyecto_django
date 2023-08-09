@@ -1,0 +1,12 @@
+{%extends "questions/principal.html"%}
+{% block card-preguntas %} 
+    <h2>Resultados</h2>
+    <hr>
+    <p>Respuestas correctas: <strong>{{valor}} de 3</strong></p>    
+    {% if valor == "3" %}
+        <p>¡Felicidades! Pasas al siguiente nivel.</p>        
+    {% else %}
+        <p>Sigue practicando para pasar al siguiente nivel.</p>
+    {% endif %}    
+    <a href="{% url 'principal' %}"  class="btn btn-primary" style="width=150px">Regresar</a>
+{%endblock card-preguntas %} 
