@@ -1,6 +1,7 @@
+import random
 from django.http import HttpResponse
 from django.shortcuts import render
-from app1.models import Question,Answer,Level
+from app1.models import Attemp, Question,Answer,Level
 
 def index(request):
     html="""<!DOCTYPE html>
@@ -65,12 +66,13 @@ def formulario2(request):
 def formulario3(request):
     return render(request, "forms/form_employee.html", {"title":"Formulario3"})
 
-def pregunta(request, id):    
+def pregunta(request):    
     data={}
-    data["questions"] = p = Question.objects.filter(level= id)    
-    data["answers"] = Answer.objects.filter(question_id__in=data["questions"])
-    print(data["answers"])
-    data["valor"] = id        
+    id = int(request.POST.get("flexRadioDefault"))
+    num_preguntas = int(request.POST.get("num_preguntas"))
+    p = Question.objects.filter(level= id)   
+    data["questions"] =  random.sample(list(p), num_preguntas)
+    data["answers"] = Answer.objects.filter(question_id__in=data["questions"])    
     return render(request, "questions/pregunta.html",data)
 
 def principal(request):    
@@ -81,7 +83,15 @@ def principal(request):
 
 def resultados(request):
     data={}
-    if request.method=="POST":
-        valor = request.POST.get("valor_form")        
-        data["valor"] = valor
+    correcto=0    
+    if request.method == "POST":
+        num_preguntas = request.POST.get("num-preguntas").strip()
+        for i in range(int(num_preguntas)):
+            campo = f'opcion{str(i+1)}'            
+            r = request.POST.get(campo)
+            answer = Answer.objects.filter(answer__contains = r).first()
+            if answer.is_correct:
+                correcto+=1
+    data["correcto"] = int(correcto)
+    data["num_preguntas"] = int(num_preguntas)        
     return render(request, "questions/resultados.html",data)

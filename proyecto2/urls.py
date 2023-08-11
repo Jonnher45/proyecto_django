@@ -28,7 +28,7 @@ urlpatterns = [
     path('formulario1/', views.formulario1,name="formulario1"),
     path('formulario2/', views.formulario2,name="formulario2"),
     path('formulario3/', views.formulario3,name="formulario3"),
-    path('pregunta/<int:id>', views.pregunta,name="pregunta"),
+    path('pregunta/', views.pregunta,name="pregunta"),
     path('principal/', views.principal,name="principal"),
     path('resultados/', views.resultados,name="resultados"),
 ]
